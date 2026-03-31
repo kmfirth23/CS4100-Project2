@@ -23,6 +23,8 @@ using namespace std;
 #define TKVARIABLE 010
 #define TKSEMI 011
 #define TKOPEN 012
+#define TKIN 013
+#define TKFOR 014
 
 
 extern "C" int yylex();
@@ -83,16 +85,18 @@ S [a-zA-Z1-9_ ]*/
 				}
 				}
 
-buildnode			{return TKBUILDNODE;}
-"print"				{return TKPRINT;}
-name 				{return TKNAME;}
-isachildof			{return TKISCHILD;}
-weight				{return TKWEIGHT;}
-[0-9]+				{value = atoi(yytext); return TKINT;}
-";"					{return TKSEMI;}
-"{"					{return TKOPEN;}
-["“][a-zA-Z0-9]+["”]	{str = yytext; return TKSTRING;}
-[a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
+buildnode						{return TKBUILDNODE;}
+"print"							{return TKPRINT;}
+name 							{return TKNAME;}
+in								{return TKIN;}
+"for"							{return TKFOR;}
+isachildof						{return TKISCHILD;}
+weight							{return TKWEIGHT;}
+[0-9]+							{value = atoi(yytext); return TKINT;}
+";"								{return TKSEMI;}
+"{"								{return TKOPEN;}
+["“][a-zA-Z0-9]+["”]			{str = yytext; return TKSTRING;}
+[a-zA-Z_][a-zA-Z0-9_]*			{var = yytext; return TKVARIABLE;}
 [0-9][a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
 
 
@@ -117,15 +121,19 @@ int main() {
 				break;
 			case TKPRINT : cout <<"PRINT";
 				break;
-			case TKINT : cout << "INT " << value;
+			case TKIN : cout << "IN ";
+				break;
+			case TKFOR : cout << "FOR "; 
+			case TKINT : cout << "INT " << value << " ";
+				break;
+			case TKVARIABLE : cout << "VARIABLE " << var << " ";
+				break;
+			case TKSTRING : cout << "STRING " << str;
 				break;
 			case TKSEMI : cout << "; " << endl;
 				break;
-			case TKOPEN : cout << "{ " << endl;
+			case TKOPEN : cout << "{" << endl;
 				break; 
-			case TKVARIABLE : cout << "VARIABLE " << var;
-				break;
-			case TKSTRING : cout << "STRING " << str;
 		}
 
 		token = yylex();
