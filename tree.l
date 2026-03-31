@@ -20,6 +20,9 @@ using namespace std;
 #define TKSTRING 006
 #define TKINT 007
 #define TKVARIABLE 010
+#define TKSEMI 011
+#define TKOPEN 012
+#define TKVARIABLE 013
 
 
 extern "C" int yylex();
@@ -84,6 +87,8 @@ name 				{return TKNAME;}
 isachildof			{return TKISCHILD;}
 weight				{return TKWEIGHT;}
 [0-9]+				{value = atoi(yytext); return TKINT;}
+";"					{return TKSEMI;}
+"{"					{return TKOPEN;}
 
 
 %%
@@ -97,18 +102,21 @@ int main() {
 	while(token){
 
 		switch (token) {
-			case TKBUILDNODE : cout << "BUILDNODE" << endl;
+			case TKBUILDNODE : cout << "BUILDNODE";
 				break; 
-			case TKNAME : cout << "NAME" << endl;
+			case TKNAME : cout << "NAME";
 				break;
-			case TKWEIGHT : cout << "WEIGHT" << endl;
+			case TKWEIGHT : cout << "WEIGHT";
 				break;
-			case TKISCHILD : cout << "ISACHILDOF" << endl;
+			case TKISCHILD : cout << "ISACHILDOF";
 				break;
-			case TKPRINT : cout <<"PRINT" << endl;
+			case TKPRINT : cout <<"PRINT";
 				break;
-			case TKINT : cout << "INT " << value << endl;
+			case TKINT : cout << "INT " << value;
 				break;
+			case TKSEMI : cout << "; " << endl;
+				break;
+			case TKOPEN : cout << "{ " << endl;
 		}
 
 		token = yylex();
