@@ -83,7 +83,7 @@ buildnode			{return TKBUILDNODE;}
 name 				{return TKNAME;}
 isachildof			{return TKISCHILD;}
 weight				{return TKWEIGHT;}
-[1-9]+				{value = atoi(yytext); return TKINT;}
+[0-9]+				{value = atoi(yytext); return TKINT;}
 
 
 %%

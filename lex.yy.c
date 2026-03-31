@@ -375,7 +375,7 @@ static const YY_CHAR yy_ec[256] =
         1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    3,    1,    1,    1,    1,    4,    1,    5,    5,
+        1,    3,    1,    1,    1,    1,    4,    5,    5,    5,
         5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -475,7 +475,9 @@ char *yytext;
 */
 #line 9 "tree.l"
 
-#include <iostream> 
+#include <iostream>
+#include <stdlib.h> 
+
 using namespace std;
 
 #define TKBUILDNODE 001
@@ -495,6 +497,7 @@ int linecount =1;
 int indent;
 int n;
 char *return_string;
+int value;
 
 /*Count the number of lines. */
 void Addline(char c)
@@ -510,11 +513,11 @@ int line_num()
     return linecount;
 }
 
-#line 514 "lex.yy.c"
+#line 517 "lex.yy.c"
 /*variable names alphabet*/
 /*V [a-zA-Z1-9_]
 S [a-zA-Z1-9_ ]*/
-#line 518 "lex.yy.c"
+#line 521 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -731,9 +734,9 @@ YY_DECL
 		}
 
 	{
-#line 51 "tree.l"
+#line 54 "tree.l"
 
-#line 737 "lex.yy.c"
+#line 740 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -793,13 +796,13 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 52 "tree.l"
+#line 55 "tree.l"
 {Addline(yytext[0]);
                 /*Remove tabs/spaces/newlines */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 55 "tree.l"
+#line 58 "tree.l"
 {
                 char c;
                 while (1) 
@@ -825,40 +828,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 78 "tree.l"
+#line 81 "tree.l"
 {return TKBUILDNODE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 79 "tree.l"
+#line 82 "tree.l"
 {return TKPRINT;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 80 "tree.l"
+#line 83 "tree.l"
 {return TKNAME;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 81 "tree.l"
+#line 84 "tree.l"
 {return TKISCHILD;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 82 "tree.l"
+#line 85 "tree.l"
 {return TKWEIGHT;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 83 "tree.l"
-{return TKINT;}
+#line 86 "tree.l"
+{value = atoi(yytext); return TKINT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 86 "tree.l"
+#line 89 "tree.l"
 ECHO;
 	YY_BREAK
-#line 862 "lex.yy.c"
+#line 865 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1863,7 +1866,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 86 "tree.l"
+#line 89 "tree.l"
 
 int yywrap(){
     return true; 
@@ -1875,17 +1878,17 @@ int main() {
 	while(token){
 
 		switch (token) {
-			case TKBUILDNODE : cout << "BUILDNODE";
+			case TKBUILDNODE : cout << "BUILDNODE" << endl;
 				break; 
-			case TKNAME : cout << "NAME";
+			case TKNAME : cout << "NAME" << endl;
 				break;
-			case TKWEIGHT : cout << "WEIGHT";
+			case TKWEIGHT : cout << "WEIGHT" << endl;
 				break;
-			case TKISCHILD : cout << "ISACHILDOF";
+			case TKISCHILD : cout << "ISACHILDOF" << endl;
 				break;
-			case TKPRINT : cout <<"PRINT";
+			case TKPRINT : cout <<"PRINT" << endl;
 				break;
-			case TKINT : cout << "INT";
+			case TKINT : cout << "INT " << value << endl;
 				break;
 		}
 
