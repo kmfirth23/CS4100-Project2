@@ -5,7 +5,7 @@ What is does
 ## Group Info
 Worked on by Kennedy Firth and Megan Penn. 
 Github info: 
-    Kennedy Fith: https://github.com/kmfirth23
+    Kennedy Firth: https://github.com/kmfirth23
     Megan Penn: https://github.com/meganepenn
 
 ## How to run
