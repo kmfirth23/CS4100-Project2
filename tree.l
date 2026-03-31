@@ -7,7 +7,9 @@
 
 %{ //declarations
 
-#include <iostream> 
+#include <iostream>
+#include <stdlib.h> 
+
 using namespace std;
 
 #define TKBUILDNODE 001
@@ -27,6 +29,7 @@ int linecount =1;
 int indent;
 int n;
 char *return_string;
+int value;
 
 /*Count the number of lines. */
 void Addline(char c)
@@ -80,7 +83,7 @@ buildnode			{return TKBUILDNODE;}
 name 				{return TKNAME;}
 isachildof			{return TKISCHILD;}
 weight				{return TKWEIGHT;}
-[1-9]+				{return TKINT;}
+[1-9]+				{value = atoi(yytext); return TKINT;}
 
 
 %%
@@ -94,17 +97,17 @@ int main() {
 	while(token){
 
 		switch (token) {
-			case TKBUILDNODE : cout << "BUILDNODE";
+			case TKBUILDNODE : cout << "BUILDNODE" << endl;
 				break; 
-			case TKNAME : cout << "NAME";
+			case TKNAME : cout << "NAME" << endl;
 				break;
-			case TKWEIGHT : cout << "WEIGHT";
+			case TKWEIGHT : cout << "WEIGHT" << endl;
 				break;
-			case TKISCHILD : cout << "ISACHILDOF";
+			case TKISCHILD : cout << "ISACHILDOF" << endl;
 				break;
-			case TKPRINT : cout <<"PRINT";
+			case TKPRINT : cout <<"PRINT" << endl;
 				break;
-			case TKINT : cout << "INT";
+			case TKINT : cout << "INT " << value << endl;
 				break;
 		}
 
