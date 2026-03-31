@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdlib.h> 
+#include <string>
 
 using namespace std;
 
@@ -22,7 +23,6 @@ using namespace std;
 #define TKVARIABLE 010
 #define TKSEMI 011
 #define TKOPEN 012
-#define TKVARIABLE 013
 
 
 extern "C" int yylex();
@@ -33,6 +33,7 @@ int indent;
 int n;
 char *return_string;
 int value;
+string var;
 
 /*Count the number of lines. */
 void Addline(char c)
@@ -89,7 +90,8 @@ weight				{return TKWEIGHT;}
 [0-9]+				{value = atoi(yytext); return TKINT;}
 ";"					{return TKSEMI;}
 "{"					{return TKOPEN;}
-
+[a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
+[0-9][a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
 
 %%
 int yywrap(){
@@ -117,6 +119,8 @@ int main() {
 			case TKSEMI : cout << "; " << endl;
 				break;
 			case TKOPEN : cout << "{ " << endl;
+				break; 
+			case TKVARIABLE : cout << "VARIABLE " << var;
 		}
 
 		token = yylex();
