@@ -1,15 +1,15 @@
 # CS4100-Project2
-
-What is does
+The Lexical Analysis portion of the compiler for the TreeBuilder language. Accepts a program as a file and returns the identified tokens as output to the terminal. 
 
 ## Group Info
 Worked on by Kennedy Firth and Megan Penn. 
 Github info: 
-    Kennedy Fith: https://github.com/kmfirth23
+    Kennedy Firth: https://github.com/kmfirth23
     Megan Penn: https://github.com/meganepenn
 
 ## How to run
-Instructions
+make
+tree < <file_name>
 
 ## Clean
-What it does
+make clean
