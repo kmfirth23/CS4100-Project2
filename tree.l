@@ -10,7 +10,15 @@
 #include <iostream> 
 using namespace std;
 
-//add here
+#define TKBUILDNODE 001
+#define TKNAME 002
+#define TKWEIGHT 003
+#define TKISCHILD 004
+#define TKPRINT 005
+#define TKSTRING 006
+#define TKINT 007
+#define TKVARIABLE 010
+
 
 extern "C" int yylex();
 extern char *yytext;
@@ -36,6 +44,10 @@ int line_num()
 
 %}
 
+
+/*variable names alphabet*/
+/*V [a-zA-Z1-9_]
+S [a-zA-Z1-9_ ]*/
 %%
 [ \t\n\f]       {Addline(yytext[0]);
                 /*Remove tabs/spaces/newlines */}
@@ -63,7 +75,13 @@ int line_num()
 				}
 				}
 
-////add here
+buildnode			{return TKBUILDNODE;}
+"print"				{return TKPRINT;}
+name 				{return TKNAME;}
+isachildof			{return TKISCHILD;}
+weight				{return TKWEIGHT;}
+[1-9]+				{return TKINT;}
+
 
 %%
 int yywrap(){
@@ -76,7 +94,18 @@ int main() {
 	while(token){
 
 		switch (token) {
-			///add here 
+			case TKBUILDNODE : cout << "BUILDNODE";
+				break; 
+			case TKNAME : cout << "NAME";
+				break;
+			case TKWEIGHT : cout << "WEIGHT";
+				break;
+			case TKISCHILD : cout << "ISACHILDOF";
+				break;
+			case TKPRINT : cout <<"PRINT";
+				break;
+			case TKINT : cout << "INT";
+				break;
 		}
 
 		token = yylex();
