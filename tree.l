@@ -34,6 +34,7 @@ int n;
 char *return_string;
 int value;
 string var;
+string str;
 
 /*Count the number of lines. */
 void Addline(char c)
@@ -90,8 +91,10 @@ weight				{return TKWEIGHT;}
 [0-9]+				{value = atoi(yytext); return TKINT;}
 ";"					{return TKSEMI;}
 "{"					{return TKOPEN;}
+"\""[a-zA-Z0-9]+"\""	{str = yytext; return TKSTRING;}
 [a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
 [0-9][a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
+
 
 %%
 int yywrap(){
@@ -121,6 +124,8 @@ int main() {
 			case TKOPEN : cout << "{ " << endl;
 				break; 
 			case TKVARIABLE : cout << "VARIABLE " << var;
+				break;
+			case TKSTRING : cout << "STRING " << str;
 		}
 
 		token = yylex();
