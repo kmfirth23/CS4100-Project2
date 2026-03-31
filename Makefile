@@ -2,7 +2,8 @@
 
 tree: tree.l
 	flex tree.l
-	gcc lex.yy.c -o tree -lfl
+	g++ -o tree lex.yy.c
+	./tree < example.txt
 
 clean:
 	rm -f tree lex.yy.c
