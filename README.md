@@ -9,7 +9,6 @@ Github info:
 
 ## How to run
 make
-tree < <file_name>
 
 ## Clean
 make clean
