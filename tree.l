@@ -95,9 +95,8 @@ weight							{return TKWEIGHT;}
 [0-9]+							{value = atoi(yytext); return TKINT;}
 ";"								{return TKSEMI;}
 "{"								{return TKOPEN;}
-["“][a-zA-Z0-9]+["”]			{str = yytext; return TKSTRING;}
+"\""[a-zA-Z0-9 ]+"\""			{str = yytext; return TKSTRING;}
 [a-zA-Z_][a-zA-Z0-9_]*			{var = yytext; return TKVARIABLE;}
-[0-9][a-zA-Z_][a-zA-Z0-9_]*		{var = yytext; return TKVARIABLE;}
 
 
 %%
