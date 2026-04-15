@@ -1,6 +1,5 @@
 %start start_var
-%left '*' '/' '%'
-%left '+' '-'
+%left '+'
 
 %{
     #include <iostream>
@@ -38,15 +37,26 @@ program
 
 statement
     : build_statement
-    | name_statement
-    | weight_statement
-    | child_statement
-    | print_statement
     | for_statement
+    | print_statement
     ;
 
 build_statement
-    : TKBUILDNODE TKVARIABLE TKSEMI
+    : TKBUILDNODE '{' node_field '}' ';'
         {
             parseTree.buildNode($2)
         }
+
+node_field
+    : TKNAME '=' expr ';'
+    | TKWEIGHT '=' expr ';'
+    | TKISCHILD '=' expr ';'
+    ;
+
+print_statement
+    : TKPRINT '(' expr ')' ';'
+
+
+
+
+
