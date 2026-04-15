@@ -10,6 +10,12 @@
 #include <iostream>
 #include <stdlib.h> 
 #include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <algorithm>
+#include <cstdlib>
 
 using namespace std;
 
@@ -21,8 +27,6 @@ using namespace std;
 #define TKSTRING 006
 #define TKINT 007
 #define TKVARIABLE 010
-#define TKSEMI 011
-#define TKOPEN 012
 #define TKIN 013
 #define TKFOR 014
 
@@ -92,12 +96,46 @@ in								{return TKIN;}
 "for"							{return TKFOR;}
 isachildof						{return TKISCHILD;}
 weight							{return TKWEIGHT;}
-[0-9]+							{value = atoi(yytext); return TKINT;}
-";"								{return TKSEMI;}
-"{"								{return TKOPEN;}
-"\""[a-zA-Z0-9 ]+"\""			{str = yytext; return TKSTRING;}
-[a-zA-Z_][a-zA-Z0-9_]*			{var = yytext; return TKVARIABLE;}
-
-
+[0-9]+							{yylval.s_val = strdup(yytext); return TKINT;}
+"\""[a-zA-Z0-9 ]+"\""			{yylval.s_val = strdup(yytext); return TKSTRING;}
+[a-zA-Z_][a-zA-Z0-9_]*			{yylval.s_val = strdup(yytext); return TKVARIABLE;}
+[+\-*%{},;=\<\>()]              {return yytext[0];}
+.                               {Addline(yytext[0]);}
 %%
+/*
+int yywrap(){
+    return true; 
+}
 
+int main() {
+	int token = 0;
+	token = yylex();
+	while(token){
+
+		switch (token) {
+			case TKBUILDNODE : cout << "BUILDNODE";
+				break; 
+			case TKNAME : cout << "NAME";
+				break;
+			case TKWEIGHT : cout << "WEIGHT";
+				break;
+			case TKISCHILD : cout << "ISACHILDOF";
+				break;
+			case TKPRINT : cout <<"PRINT";
+				break;
+			case TKIN : cout << "IN ";
+				break;
+			case TKFOR : cout << "FOR "; 
+			case TKINT : cout << "INT " << value << " ";
+				break;
+			case TKVARIABLE : cout << "VARIABLE " << var << " ";
+				break;
+			case TKSTRING : cout << "STRING " << str;
+				break;
+		}
+
+		token = yylex();
+        
+	}
+}
+*/
