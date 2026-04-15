@@ -17,6 +17,7 @@
 #include <set>
 #include <algorithm>
 #include <iostream>
+#include "tree_node.h"
 
 
 using namespace std;
@@ -316,12 +317,14 @@ class print_statement: public statement {
 
 class build_statement: public statement {
  public: 
-    build_statement(string n, string w, string p = "";){
+    build_statement(string n, string w, string p = ""){
         name = n;
         weight = w;
         parent = p;
+
+        // new Node(n, w, p);
     }
-    virtual void evaluate_statement(map<string, *Node> &sym_tab){
+    virtual void evaluate_statement(map<string, Node*> &sym_tab){
         // stuff i dont know what though
     }
 
