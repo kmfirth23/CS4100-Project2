@@ -10,18 +10,15 @@ class Node{
     public:
         string name;
         string weight;
-        vector<Node*> children;
+        Node* parent;
 
-    Node(string n, int w) {
+    Node(string n, int w, Node* p = NULL) {
         name = n;
         weight = w;
+        parent = p;
     }
 
-    void addChild(Node* child) {
-        children.push_back(child);
-    }
-
-    void print() {
+    /**void print() {
         cout << name;
         if (!children.empty()) {
             cout << "[";
@@ -33,7 +30,7 @@ class Node{
             }
             cout << "]";
         }
-    }
+    }**/
 };
 
 #endif
