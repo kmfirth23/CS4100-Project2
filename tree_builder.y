@@ -20,7 +20,7 @@
 %type <bool_ptr> boolean_expr
 %type <s_ptr> statement for_statement assignment_statement print_statement
 %type <c_ptr> prog start_var
-%token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKSTRING TKINT TKVARIABLE TKSEMI TKOPEN TKIN TKFOR
+%token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKSTRING TKINT TKVARIABLE TKIN TKFOR
 
 %union {
     char* s_val;
