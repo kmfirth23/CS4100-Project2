@@ -1,5 +1,5 @@
-# CS4100-Project2
-The Lexical Analysis portion of the compiler for the TreeBuilder language. Accepts a program as a file and returns the identified tokens as output to the terminal. 
+# CS4100-Project3
+We have constructed a simple compiler for a language that works with Trees. After we build trees we will print them off to the screen. We will be using the lexical analysis done in project 2 and adding in syntactic analysis through YACC. 
 
 ## Group Info
 Worked on by Kennedy Firth and Megan Penn. 
