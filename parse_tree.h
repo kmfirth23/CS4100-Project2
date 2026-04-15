@@ -256,9 +256,10 @@ class compound_statement: public statement {
 };
   
 
-class while_statement: public statement {
+class for_statement: public statement {
  public:
-  while_statement(boolean_expression *cond, compound_statement *body) {
+    // current logic is for while loop, change for the for loop
+  for_statement(boolean_expression *cond, compound_statement *body) {
     c=cond;
     b=body;
   }
@@ -311,4 +312,21 @@ class print_statement: public statement {
   private:
     integer_expression *e;
 
+};
+
+class build_statement: public statement {
+ public: 
+    build_statement(string n, string w, string p = "";){
+        name = n;
+        weight = w;
+        parent = p;
+    }
+    virtual void evaluate_statement(map<string, *Node> &sym_tab){
+        // stuff i dont know what though
+    }
+
+ private:
+    string name;
+    string weight;
+    string parent;
 };
