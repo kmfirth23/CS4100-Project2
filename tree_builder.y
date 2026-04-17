@@ -76,7 +76,10 @@ node_fields
     ;
 
 for_statement
-    : 
+    : TKFOR TKVARIABLE TKIN '(' TKINT ':' TKINT ')'
+        {
+            $$ = new for_statement($2, $5, $7);
+        }
 
 print_statement
     : TKPRINT '(' expr ')' ';'
