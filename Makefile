@@ -3,13 +3,13 @@
 all: tree
 
 tree: prog.tab.c lex.yy.c parse_tree.h tree_node.h
-	g++ -o tree prog.tab.c -ll
+	g++ -o tree prog.tab.c 
 	
 prog.tab.c: tree_builder.y parse_tree.h tree_node.h
-	bison tree_builder.y 
-	cat prog.tab.c  | sed 's/  __attribute__ ((__unused__))/\/\/ /g' >temp.cc	
+	bison -d -o prog.tab.c tree_builder.y 
+	cat prog.tab.c  | sed 's/  __attribute__ ((__unused__))/\/\/ /g' > temp.cc	
 	mv temp.cc prog.tab.c
-lex.yy.c: prog.l
-	flex prog.l
+lex.yy.c: tree_builder.l
+	flex -o lex.yy.c tree_builder.l
 clean:
-	rm -f tree lex.yy.c prog.tab.c 
+	rm -f tree lex.yy.c prog.tab.c prog.tab.h temp.cc

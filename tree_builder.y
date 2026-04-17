@@ -13,29 +13,35 @@
     extern int yylex();
     extern FILE* yyin;
     void yyerror(const char* s);
-}
+%}
 
-%type <s_val> TKSTRING TKVARIABLE TKINT
-%type <int_ptr> integer_expression
-%type <bool_ptr> boolean_expr
-%type <s_ptr> statement for_statement assignment_statement print_statement
-%type <c_ptr> prog start_var
-%token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKSTRING TKINT TKVARIABLE TKIN TKFOR
+%token <s_val> TKSTRING TKVARIABLE TKINT
+%type <int_ptr> expr integer_expression
+%type <s_ptr> statement for_statement assignment_statement print_statement build_statement
+%type <c_ptr> program start_var
+%type <s_exp_ptr> string_expr
+%token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKIN TKFOR
 
 %union {
     char* s_val;
     integer_expression *int_ptr;
-    boolean expression *bool_ptr;
+    string_expression *s_exp_ptr;
     statement *s_ptr;
     compound_statement *c_ptr;
 }
 
+%%
+
 start_var
     : program {
-    map<string, Node*> my_sym_tab;
-    // map<string, int> my_loop_tab;
-    $$ = $1;
-    $1->evaluate_statement(my_sym_tab);
+        map<string, int> my_sym_tab;
+        map<string, string> my_str_tab;
+        map<string, Node*> my_nod_tab;
+
+        $$ = $1;
+        if ($1) {
+            $1->evaluate_statement(my_sym_tab, my_str_tab, my_nod_tab);
+        }
     }
     ;
 
@@ -43,8 +49,10 @@ program
     : statement program {
         $$ = new compound_statement($1,$2);
     }
-    // probably need stuff here but don't know what 
-    |
+    | 
+    {
+        $$ = nullptr;
+    }
     ;
 
 statement
@@ -54,26 +62,50 @@ statement
     | assignment_statement {$$ = $1;}
     ;
 
-build_statement
-    : TKBUILDNODE '{' TKNAME '=' expr ';' TKWEIGHT '=' expr ';' TKISCHILD '=' expr ';' '}' ';'
+expr 
+    : integer_expression
         {
-            $$ = new buildNode($5, $9, $13)
+            $$ = $1;
         }
     ;
 
+integer_expression
+    : TKINT
+        {
+            $$ = new int_constant(atoi($1));
+        }
+    | TKVARIABLE
+        {
+            $$ = new int_variable($1);
+        }
+    | integer_expression '+' integer_expression
+        {
+            $$ = new plus_expr($1, $3);
+        }
+    | '(' integer_expression ')'
+        {
+            $$ = $2;
+        }
+    ;
 
-node_fields
-    : TKNAME '=' expr ';'
+string_expr
+    : TKSTRING
         {
-            $$ = new assignment_statement($1, $3);
+            $$ = new string_variable($1);
         }
-    | TKWEIGHT '=' expr ';'
+    | TKVARIABLE
         {
-            $$ = new assignment_statement($1, $3);
+            $$ = new string_variable($1)
         }
-    | TKISCHILD '=' expr ';'
+
+build_statement
+    : TKBUILDNODE '{' 
+        TKNAME '=' string_expr ';' 
+        TKWEIGHT '=' expr ';' 
+        TKISCHILD '=' string_expr ';' 
+      '}' ';'
         {
-            $$ = new assignment_statement($1, $3);
+            $$ = new build_statement($5, $9, $13);
         }
     ;
 
@@ -98,7 +130,19 @@ assignment_statement
         }
     ;
 
+%%
 
+#include "lex.yy.c"
+
+void yyerror(const char *error_string)
+{
+    cout << "Error : " << error_string << " on line " << line_num() << endl;
+    exit(-1);
+}
+
+int main() {
+    yyparse();
+}
 
 
 

@@ -50,9 +50,9 @@ class int_constant:public integer_expression {
   int saved_val;
 };
 
-class variable: public string_expression {
+class string_variable: public string_expression {
   public: 
-    variable(char *str_val) {
+    string_variable(char *str_val) {
       saved_val = str_val;
     }
 
@@ -71,9 +71,9 @@ class variable: public string_expression {
   private:
     string saved_val;
 };
-class variable: public integer_expression {
+class int_variable: public integer_expression {
  public:
-  variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
+  int_variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
                           saved_val =in_val;}
 
   virtual int evaluate_expression(map<string, int> &sym_tab) {
@@ -179,7 +179,9 @@ class ee_expr: public boolean_expression {
 
 class statement {
  public:
-  virtual void evaluate_statement(map<string, int> &sym_tab) =0;
+  virtual void evaluate_statement(map<string, int> &sym_tab,
+                                  map<string, string> &str_tab,
+                                  map<string, Node*> &nod_tab) =0;
 };
 
 class compound_statement: public statement {
@@ -189,12 +191,14 @@ class compound_statement: public statement {
     r = rest;
   }
   
-  virtual void evaluate_statement(map<string, int> &sym_tab) {
+  virtual void evaluate_statement(map<string, int> &sym_tab,
+                                  map<string, string> &str_tab,
+                                  map<string, Node*> &nod_tab) {
     if (f!=NULL) {
-      f->evaluate_statement(sym_tab);
+      f->evaluate_statement(sym_tab, str_tab, nod_tab);
     }
     if (r!=NULL) {
-      r->evaluate_statement(sym_tab);
+      r->evaluate_statement(sym_tab, str_tab, nod_tab);
     }
   }
  private:
@@ -207,8 +211,8 @@ class for_statement: public statement {
  public:
     // current logic is for while loop, change for the for loop
   for_statement(string loopVar, 
-                integer_expression *u, 
-                integer_expression *l,
+                integer_expression *l, 
+                integer_expression *u,
                 statement* temp) 
   {
     loop_variable = loopVar;
@@ -217,13 +221,15 @@ class for_statement: public statement {
     body = temp;
   }
 
-  virtual void evaluate_statement(map<string, int> &sym_tab) {
+  virtual void evaluate_statement(map<string, int> &sym_tab,
+                                  map<string, string> &str_tab,
+                                  map<string, Node*> &nod_tab) {
     int low = lower_bound->evaluate_expression(sym_tab);
     int high = upper_bound->evaluate_expression(sym_tab);
 
     for (int i = low; i <= high; i++){
       sym_tab[loop_variable] = i;
-      body->evaluate_statement(sym_tab);
+      body->evaluate_statement(sym_tab, str_tab, nod_tab);
     }
   }
     
@@ -243,7 +249,9 @@ class assignment_statement: public statement {
     ident = id;
     r_side = rhs;
   }
-  virtual void evaluate_statement(map<string, int> &sym_tab) {
+  virtual void evaluate_statement(map<string, int> &sym_tab,
+                                  map<string, string> &str_tab,
+                                  map<string, Node*> &nod_tab) {
     
     int temp = r_side->evaluate_expression(sym_tab);
 
@@ -263,7 +271,9 @@ class print_statement: public statement {
   print_statement(integer_expression *expr) {
     e=expr;
   }
-  virtual void evaluate_statement(map<string, int> &sym_tab) {
+  virtual void evaluate_statement(map<string, int> &sym_tab,
+                                  map<string, string> &str_tab,
+                                  map<string, Node*> &nod_tab) {
     cout << e->evaluate_expression(sym_tab) << endl;
   }
     
@@ -288,14 +298,20 @@ class build_statement: public statement {
       weight = w;
       parent = NULL;
     }
-    virtual void evaluate_statement(map<string , string> &str_tab, map<string, int> &sym_tab, map<string, Node*> &nod_tab){
+    virtual void evaluate_statement(map<string , string> &str_tab, 
+                                    map<string, int> &sym_tab, 
+                                    map<string, Node*> &nod_tab){
       string tempName = name->evaluate_expression(str_tab);
       int tempWeight = weight ->evaluate_expression(sym_tab);
-      string tempParent = parent ->evaluate_expression(str_tab);
       
+      Node *node_temp;
       
-      Node* node_temp = new Node(tempName, tempWeight, tempParent);
-
+      if (parent != NULL) {
+        string tempParent = parent->evaluate_expression(str_tab);
+        node_temp = new Node(tempName, tempWeight, tempParent);
+      } else {
+        node_temp = new Node(tempName, tempWeight);
+      }
         //cout << "Assigning" << ident << " to " << temp << endl;
 
         nod_tab[tempName] = node_temp;
