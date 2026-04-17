@@ -77,20 +77,6 @@ class variable: public integer_expression {
   
 };
 
-class neg_constant: public integer_expression {
- public:
-  neg_constant(integer_expression *ptr) {
-    eval_ptr = ptr;
-  }
-  
-  virtual int evaluate_expression(map<string, int> &sym_tab) {
-    return -eval_ptr->evaluate_expression(sym_tab);
-  }
-  integer_expression *eval_ptr;
-};
-
-
-
 class plus_expr: public integer_expression {
  public:
   plus_expr(integer_expression *left, integer_expression *right) {
@@ -106,72 +92,6 @@ class plus_expr: public integer_expression {
     integer_expression *l;
     integer_expression *r;
 };
-
-class minus_expr: public integer_expression {
- public:
-  minus_expr(integer_expression *left, integer_expression *right) {
-    l = left;
-    r = right;
-  }
-
-  virtual int evaluate_expression(map<string, int> &sym_tab) {
-    return l->evaluate_expression(sym_tab) - r->evaluate_expression(sym_tab);
-  }
-  
-  private:
-    integer_expression *l;
-    integer_expression *r;
-};
-
-class mult_expr: public integer_expression {
- public:
-  mult_expr(integer_expression *left, integer_expression *right) {
-    l = left;
-    r = right;
-  }
-
-  virtual int evaluate_expression(map<string, int> &sym_tab) {
-    return l->evaluate_expression(sym_tab) * r->evaluate_expression(sym_tab);
-  }
-  
-  private:
-    integer_expression *l;
-    integer_expression *r;
-};
-
-
-class div_expr: public integer_expression {
- public:
-  div_expr(integer_expression *left, integer_expression *right) {
-    l = left;
-    r = right;
-  }
-
-  virtual int evaluate_expression(map<string, int> &sym_tab) {
-    return l->evaluate_expression(sym_tab) / r->evaluate_expression(sym_tab);
-  }
-  
-  private:
-    integer_expression *l;
-    integer_expression *r;
-};
-
-class mod_expr: public integer_expression {
- public:
-  mod_expr(integer_expression *left, integer_expression *right) {
-    l = left;
-    r = right;
-  }
-
-  virtual int evaluate_expression(map<string, int> &sym_tab) {
-    return l->evaluate_expression(sym_tab) % r->evaluate_expression(sym_tab);
-  }
-  
-  private:
-    integer_expression *l;
-    integer_expression *r;
-};
-
 
 class less_expr: public boolean_expression {
  public:
