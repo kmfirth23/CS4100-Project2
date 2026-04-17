@@ -382,7 +382,7 @@ static const YY_CHAR yy_ec[256] =
         6,    6,    1,    1,   10,   10,   10,   10,   10,   10,
        10,   10,   10,   10,   10,   10,   10,   10,   10,   10,
        10,   10,   10,   10,   10,   10,   10,   10,   10,   10,
-        1,    1,    1,    1,   11,    1,   12,   13,   14,   15,
+        6,    1,    6,    1,   11,    1,   12,   13,   14,   15,
 
        16,   17,   18,   19,   20,   10,   10,   21,   22,   23,
        24,   25,   10,   26,   27,   28,   29,   10,   30,   10,
@@ -894,14 +894,16 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 92 "tree_builder.l"
-{Addline(yytext[0]);}
+{cout << "Illegal Character " << yytext <<"on line" << linecount << endl;
+				 				cout << "Ignored" << endl;
+								Addline(yytext[0]);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 93 "tree_builder.l"
+#line 95 "tree_builder.l"
 ECHO;
 	YY_BREAK
-#line 905 "lex.yy.c"
+#line 907 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1906,7 +1908,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 93 "tree_builder.l"
+#line 95 "tree_builder.l"
 
 
 int yywrap(){

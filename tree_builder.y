@@ -118,14 +118,18 @@ build_statement
     ;
 
 for_statement
-    : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' build_statement
+    : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' '{' build_statement '}' ';'
         {
-            $$ = new for_statement($2, $5, $7, $9);
+            $$ = new for_statement($2, $5, $7, $10);
         }
     ;
 
 print_statement
     : TKPRINT '(' expr ')' ';'
+        {
+            $$ = new print_statement($3);
+        }
+    | TKPRINT '(' string_expr ')' ';'
         {
             $$ = new print_statement($3);
         }

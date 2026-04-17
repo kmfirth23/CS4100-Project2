@@ -29,9 +29,10 @@ class integer_expression {
 
 class string_expression {
   public:
-    virtual string evaluate_expression(map<string, string> &str_tab) =0;
+    virtual string evaluate_expression(map<string, int> &sym_tab, 
+                                      map<string, string> &str_tab, 
+                                      map<string, Node*> &nod_tab ) =0;
 };
-
 
 class boolean_expression {
  public:
@@ -56,7 +57,9 @@ class string_variable: public string_expression {
       saved_val = str_val;
     }
 
-    virtual string evaluate_expression(map<string, string> &str_tab) {
+    virtual string evaluate_expression(map<string, int> &sym_tab, 
+                                      map<string, string> &str_tab, 
+                                      map<string, Node*> &nod_tab) {
       map<string,string>::iterator p;
       p = str_tab.find(saved_val);
 
@@ -270,16 +273,27 @@ class print_statement: public statement {
  public:
   print_statement(integer_expression *expr) {
     e=expr;
+    s = nullptr;
+  }
+  print_statement(string_expression *str)
+  {
+    e=nullptr;
+    s = str;
   }
   virtual void evaluate_statement(map<string, int> &sym_tab,
                                   map<string, string> &str_tab,
                                   map<string, Node*> &nod_tab) {
-    cout << e->evaluate_expression(sym_tab) << endl;
+    if(e != nullptr)
+      cout << e->evaluate_expression(sym_tab) << endl;
+    else if (s != nullptr)
+      cout << s->evaluate_expression(sym_tab, str_tab, nod_tab) << endl;
+
   }
     
 
   private:
     integer_expression *e;
+    string_expression *s; 
 
 };
 
@@ -301,13 +315,13 @@ class build_statement: public statement {
     virtual void evaluate_statement(map<string, int> &sym_tab,
                                     map<string , string> &str_tab,  
                                     map<string, Node*> &nod_tab){
-      string tempName = name->evaluate_expression(str_tab);
+      string tempName = name->evaluate_expression(sym_tab, str_tab, nod_tab);
       int tempWeight = weight ->evaluate_expression(sym_tab);
       
       Node *node_temp;
       
       if (parent != NULL) {
-        string tempParent = parent->evaluate_expression(str_tab);
+        string tempParent = parent->evaluate_expression(sym_tab, str_tab, nod_tab);
         node_temp = new Node(tempName, tempWeight, tempParent);
       } else {
         node_temp = new Node(tempName, tempWeight);
