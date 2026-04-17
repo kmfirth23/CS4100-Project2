@@ -97,12 +97,20 @@ string_expr
         {
             $$ = new string_variable($1);
         }
+    ;
 
 build_statement
     : TKBUILDNODE '{' 
         TKNAME '=' string_expr ';' 
         TKWEIGHT '=' expr ';' 
-        TKISCHILD '=' string_expr ';' 
+      '}' ';'
+        {
+            $$ = new build_statement($5, $9);
+        }
+    | TKBUILDNODE '{'
+        TKNAME '=' string_expr ';'
+        TKWEIGHT '=' expr ';'
+        TKISCHILD '=' string_expr ';'
       '}' ';'
         {
             $$ = new build_statement($5, $9, $13);
@@ -110,7 +118,7 @@ build_statement
     ;
 
 for_statement
-    : TKFOR TKVARIABLE TKIN '(' expr ':' expr ')' build_statement
+    : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' build_statement
         {
             $$ = new for_statement($2, $5, $7, $9);
         }
