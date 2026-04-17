@@ -335,10 +335,10 @@ class build_statement: public statement {
       weight = w;
       parent = "";
     }
-    virtual void evaluate_statement(map<string , string> &sym_tab){
-      string tempName = name->evaluate_expression(sym_tab);
-      string tempWeight = name ->evaluate_expression(sym_tab);
-      string tempParent = name ->evaluate_expression(sym_tab);
+    virtual void evaluate_statement(map<string , string> &str_tab, map<string, int> &sym_tab){
+      string tempName = name->evaluate_expression(str_tab);
+      int tempWeight = name ->evaluate_expression(sym_tab);
+      string tempParent = name ->evaluate_expression(str_tab);
       
       
       Node* node_temp = new Node(tempName, tempWeight, tempParent);
