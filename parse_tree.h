@@ -322,7 +322,7 @@ class print_statement: public statement {
 
 class build_statement: public statement {
  public: 
-    build_statement(string_expression* n, int_expression* w, string_expression* p){
+    build_statement(string_expression* n, integer_expression* w, string_expression* p){
         name = n;
         weight = w;
         parent = p;
@@ -330,7 +330,7 @@ class build_statement: public statement {
         // new Node(n, w, p);
     }
 
-    build_statement(string_expression* n, int_expression* w) {
+    build_statement(string_expression* n, integer_expression* w) {
       name = n;
       weight = w;
       parent = "";
@@ -351,7 +351,7 @@ class build_statement: public statement {
 
  private:
     string_expression* name;
-    int_expression* weight;
+    integer_expression* weight;
     string_expression* parent;
     Node* r_side = 
 };
