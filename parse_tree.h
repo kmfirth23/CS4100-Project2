@@ -335,7 +335,7 @@ class build_statement: public statement {
       weight = w;
       parent = "";
     }
-    virtual void evaluate_statement(map<string , string> &str_tab, map<string, int> &sym_tab){
+    virtual void evaluate_statement(map<string , string> &str_tab, map<string, int> &sym_tab, map<string, Node*> &nod_tab){
       string tempName = name->evaluate_expression(str_tab);
       int tempWeight = weight ->evaluate_expression(sym_tab);
       string tempParent = parent ->evaluate_expression(str_tab);
@@ -345,7 +345,7 @@ class build_statement: public statement {
 
         //cout << "Assigning" << ident << " to " << temp << endl;
 
-        sym_tab[name] = node_temp;
+        nod_tab[tempName] = node_temp;
 
     }
 
