@@ -87,7 +87,7 @@ weight							{return TKWEIGHT;}
 [0-9]+							{yylval.s_val = strdup(yytext); return TKINT;}
 "\""[a-zA-Z0-9 ]+"\""			{yylval.s_val = strdup(yytext); return TKSTRING;}
 [a-zA-Z_][a-zA-Z0-9_]*			{yylval.s_val = strdup(yytext); return TKVARIABLE;}
-[+\-*%{},;=\<\>()]              {return yytext[0];}
+[+\-*%{},;:=\<\>()]              {return yytext[0];}
 .                               {Addline(yytext[0]);}
 %%
 /*
