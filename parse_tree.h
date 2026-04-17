@@ -333,7 +333,7 @@ class build_statement: public statement {
     build_statement(string_expression* n, integer_expression* w) {
       name = n;
       weight = w;
-      parent = "";
+      parent = NULL;
     }
     virtual void evaluate_statement(map<string , string> &str_tab, map<string, int> &sym_tab, map<string, Node*> &nod_tab){
       string tempName = name->evaluate_expression(str_tab);
@@ -353,5 +353,4 @@ class build_statement: public statement {
     string_expression* name;
     integer_expression* weight;
     string_expression* parent;
-    Node* r_side = 
 };

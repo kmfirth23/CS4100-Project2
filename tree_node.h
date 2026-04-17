@@ -10,9 +10,9 @@ class Node{
     public:
         string name;
         int weight;
-        Node* parent;
+        string parent;
 
-    Node(string n, int w, Node* p = NULL) {
+    Node(string n, int w, string p = NULL) {
         name = n;
         weight = w;
         parent = p;
