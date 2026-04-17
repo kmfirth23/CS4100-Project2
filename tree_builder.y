@@ -37,6 +37,7 @@ start_var
     $$ = $1;
     $1->evaluate_statement(my_sym_tab);
     }
+    ;
 
 program 
     : statement program {
@@ -56,8 +57,9 @@ statement
 build_statement
     : TKBUILDNODE '{' TKNAME '=' expr ';' TKWEIGHT '=' expr ';' TKISCHILD '=' expr ';' '}' ';'
         {
-            $$ = new buildNode($3, $7, $11)
+            $$ = new buildNode($5, $9, $13)
         }
+    ;
 
 
 node_fields
@@ -76,22 +78,25 @@ node_fields
     ;
 
 for_statement
-    : TKFOR TKVARIABLE TKIN '(' TKINT ':' TKINT ')'
+    : TKFOR TKVARIABLE TKIN '(' expr ':' expr ')' build_statement
         {
-            $$ = new for_statement($2, $5, $7);
+            $$ = new for_statement($2, $5, $7, $9);
         }
+    ;
 
 print_statement
     : TKPRINT '(' expr ')' ';'
         {
             $$ = new print_statement($3);
         }
+    ;
 
 assignment_statement
     : TKVARIABLE '=' expr ';'
         {
             $$ = new assignment_statement($1, $3);
         }
+    ;
 
 
 

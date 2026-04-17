@@ -206,22 +206,34 @@ class compound_statement: public statement {
 class for_statement: public statement {
  public:
     // current logic is for while loop, change for the for loop
-  for_statement(boolean_expression *cond, compound_statement *body) {
-    c=cond;
-    b=body;
+  for_statement(string loopVar, 
+                integer_expression *u, 
+                integer_expression *l,
+                statement* temp) 
+  {
+    loop_variable = loopVar;
+    lower_bound = l;
+    upper_bound = u;
+    body = temp;
   }
 
   virtual void evaluate_statement(map<string, int> &sym_tab) {
-    while (c->evaluate_expression(sym_tab)) {
-      b->evaluate_statement(sym_tab);
+    int low = lower_bound->evaluate_expression(sym_tab);
+    int high = upper_bound->evaluate_expression(sym_tab);
+
+    for (int i = low; i <= high; i++){
+      sym_tab[loop_variable] = i;
+      body->evaluate_statement(sym_tab);
     }
   }
     
 
     
   private:
-    boolean_expression *c;
-    compound_statement *b;
+    string loop_variable;
+    integer_expression* lower_bound;
+    integer_expression* upper_bound;
+    statement* body;
   };
 
 class assignment_statement: public statement {
