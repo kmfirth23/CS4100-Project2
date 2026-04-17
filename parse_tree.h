@@ -27,6 +27,11 @@ class integer_expression {
   virtual int evaluate_expression(map<string, int> &sym_tab) =0;
 };
 
+class string_expression {
+  public:
+    virtual string evaluate_expression(map<string, string> &sym_tab) =0;
+};
+
 
 class boolean_expression {
  public:
@@ -317,19 +322,32 @@ class print_statement: public statement {
 
 class build_statement: public statement {
  public: 
-    build_statement(string n, string w, string p = ""){
+    build_statement(string_expression n, string_expression w, string p){
         name = n;
         weight = w;
         parent = p;
 
         // new Node(n, w, p);
     }
+
+    build_statement(string n, string w) {
+      name = n;
+      weight = w;
+      parent = "";
+    }
     virtual void evaluate_statement(map<string, Node*> &sym_tab){
-        // stuff i dont know what though
+        Node* node_temp = new Node(name, weight, parent);
+        int temp = node_temp->evaluate_expression(sym_tab);
+
+        //cout << "Assigning" << ident << " to " << temp << endl;
+
+        sym_tab[name] = temp;
+
     }
 
  private:
-    string name;
-    string weight;
-    string parent;
+    string_expression name;
+    string_expression weight;
+    string_expression parent;
+    Node* r_side = 
 };
