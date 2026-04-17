@@ -9,7 +9,7 @@ using namespace std;
 class Node{
     public:
         string name;
-        string weight;
+        int weight;
         Node* parent;
 
     Node(string n, int w, Node* p = NULL) {

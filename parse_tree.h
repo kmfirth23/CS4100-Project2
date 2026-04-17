@@ -29,7 +29,7 @@ class integer_expression {
 
 class string_expression {
   public:
-    virtual string evaluate_expression(map<string, string> &sym_tab) =0;
+    virtual string evaluate_expression(map<string, string> &str_tab) =0;
 };
 
 
@@ -322,7 +322,7 @@ class print_statement: public statement {
 
 class build_statement: public statement {
  public: 
-    build_statement(string_expression n, string_expression w, string p){
+    build_statement(string_expression* n, int_expression* w, string_expression* p){
         name = n;
         weight = w;
         parent = p;
@@ -330,24 +330,28 @@ class build_statement: public statement {
         // new Node(n, w, p);
     }
 
-    build_statement(string n, string w) {
+    build_statement(string_expression* n, int_expression* w) {
       name = n;
       weight = w;
       parent = "";
     }
-    virtual void evaluate_statement(map<string, Node*> &sym_tab){
-        Node* node_temp = new Node(name, weight, parent);
-        int temp = node_temp->evaluate_expression(sym_tab);
+    virtual void evaluate_statement(map<string , string> &sym_tab){
+      string tempName = name->evaluate_expression(sym_tab);
+      string tempWeight = name ->evaluate_expression(sym_tab);
+      string tempParent = name ->evaluate_expression(sym_tab);
+      
+      
+      Node* node_temp = new Node(tempName, tempWeight, tempParent);
 
         //cout << "Assigning" << ident << " to " << temp << endl;
 
-        sym_tab[name] = temp;
+        sym_tab[name] = node_temp;
 
     }
 
  private:
-    string_expression name;
-    string_expression weight;
-    string_expression parent;
+    string_expression* name;
+    int_expression* weight;
+    string_expression* parent;
     Node* r_side = 
 };
