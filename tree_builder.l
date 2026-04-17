@@ -19,18 +19,6 @@
 
 using namespace std;
 
-#define TKBUILDNODE 001
-#define TKNAME 002
-#define TKWEIGHT 003
-#define TKISCHILD 004
-#define TKPRINT 005
-#define TKSTRING 006
-#define TKINT 007
-#define TKVARIABLE 010
-#define TKIN 013
-#define TKFOR 014
-
-
 extern "C" int yylex();
 extern char *yytext;
 
