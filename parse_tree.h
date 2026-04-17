@@ -50,6 +50,26 @@ class int_constant:public integer_expression {
   int saved_val;
 };
 
+class variable: public string_expression {
+  public: 
+    variable(char *str_val) {
+      saved_val = str_val;
+    }
+
+    virtual string evaluate_expression(map<string, string> &sym_tab) {
+      map<string,int>::interator p;
+      p = sym_tab.find(saved_val);
+
+      if (p!=sym_tab.end()) {
+        return p->second;
+      } else {
+        return 0;
+      }
+    }
+
+  private:
+    string saved_val;
+};
 class variable: public integer_expression {
  public:
   variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
@@ -87,7 +107,7 @@ class plus_expr: public integer_expression {
   virtual int evaluate_expression(map<string, int> &sym_tab) {
     return l->evaluate_expression(sym_tab) + r->evaluate_expression(sym_tab);
   }
-  
+
   private:
     integer_expression *l;
     integer_expression *r;
