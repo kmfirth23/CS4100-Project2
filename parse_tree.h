@@ -56,11 +56,11 @@ class variable: public string_expression {
       saved_val = str_val;
     }
 
-    virtual string evaluate_expression(map<string, string> &sym_tab) {
-      map<string,int>::interator p;
-      p = sym_tab.find(saved_val);
+    virtual string evaluate_expression(map<string, string> &str_tab) {
+      map<string,string>::iterator p;
+      p = str_tab.find(saved_val);
 
-      if (p!=sym_tab.end()) {
+      if (p!=str_tab.end()) {
         return p->second;
       } else {
         return 0;
