@@ -91,11 +91,11 @@ weight							{return TKWEIGHT;}
 [+\-*%{},;:=\<\>()]              {return yytext[0];}
 .                               {Addline(yytext[0]);}
 %%
-/*
+
 int yywrap(){
     return true; 
 }
-
+/*
 int main() {
 	int token = 0;
 	token = yylex();
