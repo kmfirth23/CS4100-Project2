@@ -20,7 +20,7 @@
 using namespace std;
 
 
-extern "C" int yylex();
+//extern "C" int yylex();
 extern char *yytext;
 
 int linecount =1; 

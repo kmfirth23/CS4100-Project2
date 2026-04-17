@@ -298,8 +298,8 @@ class build_statement: public statement {
       weight = w;
       parent = NULL;
     }
-    virtual void evaluate_statement(map<string , string> &str_tab, 
-                                    map<string, int> &sym_tab, 
+    virtual void evaluate_statement(map<string, int> &sym_tab,
+                                    map<string , string> &str_tab,  
                                     map<string, Node*> &nod_tab){
       string tempName = name->evaluate_expression(str_tab);
       int tempWeight = weight ->evaluate_expression(sym_tab);

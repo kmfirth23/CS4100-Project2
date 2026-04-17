@@ -95,7 +95,7 @@ string_expr
         }
     | TKVARIABLE
         {
-            $$ = new string_variable($1)
+            $$ = new string_variable($1);
         }
 
 build_statement
