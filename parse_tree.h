@@ -67,6 +67,7 @@ class variable: public string_expression {
       }
     }
 
+    
   private:
     string saved_val;
 };
