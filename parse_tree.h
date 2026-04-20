@@ -54,7 +54,14 @@ class int_constant:public integer_expression {
 class string_variable: public string_expression {
   public: 
     string_variable(char *str_val) {
-      saved_val = (str_val != nullptr) ? str_val : "";
+      if(str_val != nullptr)
+      {
+        saved_val = str_val;
+      }
+      else
+      {
+        saved_val = "";
+      }
     }
 
     virtual string evaluate_expression(map<string, int> &sym_tab, 
@@ -77,7 +84,14 @@ class string_variable: public string_expression {
 class int_variable: public integer_expression {
  public:
   int_variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
-    saved_val = (in_val != nullptr) ? in_val : "";
+    if(in_val != nullptr)
+    {
+      saved_val = in_val;
+    }
+    else
+    {
+      saved_val = "";
+    }
   }
 
   virtual int evaluate_expression(map<string, int> &sym_tab) {
@@ -250,7 +264,14 @@ class assignment_statement: public statement {
 
  public:
   assignment_statement(char *id, integer_expression *rhs) {
-    ident = (id != nullptr) ? id : "";
+    if(id != nullptr)
+    {
+      ident = id;
+    }
+    else
+    {
+      ident = "";
+    }
     r_side = rhs;
   }
   virtual void evaluate_statement(map<string, int> &sym_tab,
@@ -342,7 +363,14 @@ class build_statement: public statement {
 class string_constant : public string_expression {
   public:
     string_constant(char *str_val) {
-      saved_val = (str_val != nullptr) ? str_val : "";
+      if(str_val != nullptr)
+      {
+          saved_val = str_val;
+      }
+      else
+      {
+        saved_val = "";
+      }
       if (saved_val.size() >= 2 &&
           saved_val.front() == '"' &&
           saved_val.back() == '"') {
@@ -368,8 +396,25 @@ class string_concat: public string_expression {
         virtual string evaluate_expression(map<string, int> &sym_tab, 
                                       map<string, string> &str_tab, 
                                       map<string, Node*> &nod_tab) {
-            string left = (first != nullptr) ? first->evaluate_expression(sym_tab, str_tab, nod_tab) : "";
-            string right = (second != nullptr) ? second->evaluate_expression(sym_tab, str_tab, nod_tab) : "";
+            string left;
+            string right;
+            if(first != nullptr)
+            {
+              left = first->evaluate_expression(sym_tab, str_tab, nod_tab);
+            }
+            else
+            {
+              left = "";
+            }
+
+            if(second != nullptr)
+            {
+              right = second->evaluate_expression(sym_tab, str_tab, nod_tab);
+            }
+            else
+            {
+              right = "";
+            }
             return left + right;
         }
     private: 
