@@ -9,6 +9,7 @@ Github info:
 
 ## How to run
 make
+./tree < example.txt
 
 ## Clean
 make clean
