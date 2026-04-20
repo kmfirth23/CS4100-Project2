@@ -54,7 +54,6 @@ class int_constant:public integer_expression {
 class string_variable: public string_expression {
   public: 
     string_variable(char *str_val) {
-      cerr << "string_variable ctor: " << (str_val ? str_val : "NULL") << endl;
       saved_val = (str_val != nullptr) ? str_val : "";
     }
 
@@ -78,7 +77,6 @@ class string_variable: public string_expression {
 class int_variable: public integer_expression {
  public:
   int_variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
-    cerr << "int_variable ctor: " << (in_val ? in_val : "NULL") << endl;
     saved_val = (in_val != nullptr) ? in_val : "";
   }
 
@@ -344,7 +342,6 @@ class build_statement: public statement {
 class string_constant : public string_expression {
   public:
     string_constant(char *str_val) {
-      cerr << "string_constant ctor: " << (str_val ? str_val : "NULL") << endl;
       saved_val = (str_val != nullptr) ? str_val : "";
       if (saved_val.size() >= 2 &&
           saved_val.front() == '"' &&

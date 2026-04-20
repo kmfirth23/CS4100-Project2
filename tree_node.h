@@ -12,25 +12,11 @@ class Node{
         int weight;
         string parent;
 
-    Node(string n, int w, string p = NULL) {
+    Node(string n, int w, string p = "") {
         name = n;
         weight = w;
         parent = p;
     }
-
-    /**void print() {
-        cout << name;
-        if (!children.empty()) {
-            cout << "[";
-            for (long unsigned int i = 0; i < children.size(); i++) {
-                children[i] -> print ();
-                if (i != children.size() - 1) {
-                    cout << ",";
-                }
-            }
-            cout << "]";
-        }
-    }**/
 };
 
 #endif
