@@ -72,7 +72,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "tree_builder.y"
+#line 26 "tree_builder.y"
 
     char* s_val;
     integer_expression *int_ptr;
