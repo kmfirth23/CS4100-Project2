@@ -115,7 +115,10 @@ string_expr
         {
             $$ = new string_concat($1, $3);
         }
-
+    | string_expr '+' integer_variable
+        {
+            $$ = new string_concat($1, $3);
+        }
     ;
 
 build_statement
