@@ -355,3 +355,21 @@ class string_constant : public string_expression {
   private:
     string saved_val;
 };
+
+class string_concat: public string_expression {
+    public: 
+        string_concat(string_expression *str_val1, string_expression *str_val2){
+            first = str_val1;
+            second = str_val2;
+        }
+        virtual string evaluate_expression(map<string, int> &sym_tab, 
+                                      map<string, string> &str_tab, 
+                                      map<string, Node*> &nod_tab) {
+            return first->evaluate_expression(sym_tab, str_tab, nod_tab) + second->evaluate_expression(sym_tab, str_tab, nod_tab);
+        
+        
+        }
+    private: 
+        string_expression *first;
+        string_expression *second;
+};

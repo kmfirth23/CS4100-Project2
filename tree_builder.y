@@ -111,6 +111,11 @@ string_expr
         {
             $$ = new string_variable($1);
         }
+    | string_expr '+' string_expr
+        {
+            $$ = new string_concat($1, $3);
+        }
+
     ;
 
 build_statement
