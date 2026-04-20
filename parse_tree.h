@@ -1,6 +1,8 @@
 //****************************************************************
 // File: parse_tree.h
-// Author: David W. Juedes
+// Author: David W. Juedes (Base Program)
+//         Kennedy Firth and Megan Penn (Additions for Tree Builder Class)
+// 
 //
 // Copyright 2007, All rights reserved.
 // Purpose: This .h file includes a hierarchy 
