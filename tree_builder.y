@@ -15,7 +15,7 @@
     extern FILE* yyin;
     void yyerror(const char* s);
 %}
-
+/*define tokens*/
 %token <s_val> TKSTRING TKVARIABLE TKINT
 %type <int_ptr> expr integer_expression
 %type <s_ptr> statement for_statement assignment_statement print_statement build_statement
@@ -24,6 +24,7 @@
 %type <s_ptr> block_statement
 %token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKIN TKFOR
 
+/*define pointers and values*/
 %union {
     char* s_val;
     integer_expression *int_ptr;
@@ -92,6 +93,7 @@ integer_expression
         {
             $$ = new int_variable($1);
         }
+    /*adding two ints*/
     | integer_expression '+' integer_expression
         {
             $$ = new plus_expr($1, $3);
@@ -103,14 +105,17 @@ integer_expression
     ;
 
 string_expr
+    /*string on its own*/
     : TKSTRING
         {
             $$ = new string_constant($1);
         }
+    /*variable of type string*/
     | TKVARIABLE
         {
             $$ = new string_variable($1);
         }
+    /*string concatenation of two strings or an int and a string*/
     | string_expr '+' string_expr
         {
             $$ = new string_concat($1, $3);
@@ -122,6 +127,7 @@ string_expr
     ;
 
 build_statement
+    /*build for root*/
     : TKBUILDNODE '{' 
         TKNAME '=' string_expr ';' 
         TKWEIGHT '=' expr ';' 
@@ -129,6 +135,7 @@ build_statement
         {
             $$ = new build_statement($5, $9);
         }
+    /*build for child*/
     | TKBUILDNODE '{'
         TKNAME '=' string_expr ';'
         TKWEIGHT '=' expr ';'
@@ -138,14 +145,14 @@ build_statement
             $$ = new build_statement($5, $9, $13);
         }
     ;
-
+/*for statement syntax, call for_statement*/
 for_statement
     : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' block_statement
         {
             $$ = new for_statement($2, $5, $7, $9);
         }
     ;
-
+/*print the expression or the string*/
 print_statement
     : TKPRINT '(' expr ')' ';'
         {
@@ -156,7 +163,7 @@ print_statement
             $$ = new print_statement($3);
         }
     ;
-
+/*variable and value to assign to it*/
 assignment_statement
     : TKVARIABLE '=' expr ';'
         {
@@ -168,12 +175,13 @@ assignment_statement
 
 #include "lex.yy.c"
 
+/*help to display where the error is occuring*/
 void yyerror(const char *error_string)
 {
     cout << "Error : " << error_string << " on line " << line_num() << endl;
     exit(-1);
 }
-
+/*parse the input */
 int main() {
     yyparse();
 }
