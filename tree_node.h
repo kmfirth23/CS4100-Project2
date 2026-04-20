@@ -11,11 +11,26 @@ class Node{
         string name;
         int weight;
         string parent;
+        vector<Node*> children;
 
     Node(string n, int w, string p = "") {
         name = n;
         weight = w;
         parent = p;
+    }
+
+    void print() {
+        cout << name;
+        if (!children.empty()) {
+            cout << "[";
+            for (size_t i = 0; i < children.size(); i++) {
+                children[i]->print();
+                if (i != children.size() - 1) {
+                    cout << ",";
+                }
+            }
+            cout << "]";
+        }
     }
 };
 

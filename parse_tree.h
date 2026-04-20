@@ -307,8 +307,16 @@ class print_statement: public statement {
                                   map<string, Node*> &nod_tab) {
     if(e != nullptr)
       cout << e->evaluate_expression(sym_tab) << endl;
-    else if (s != nullptr)
-      cout << s->evaluate_expression(sym_tab, str_tab, nod_tab) << endl;
+    else if (s != nullptr) {
+      string val = s->evaluate_expression(sym_tab, str_tab, nod_tab);
+      auto p = nod_tab.find(val);
+      if (p != nod_tab.end()) {
+        p->second->print();
+        cout << endl;
+      } else {
+        cout << val << endl;
+      }
+    }
 
   }
     
@@ -345,12 +353,15 @@ class build_statement: public statement {
       if (parent != NULL) {
         string tempParent = parent->evaluate_expression(sym_tab, str_tab, nod_tab);
         node_temp = new Node(tempName, tempWeight, tempParent);
+        nod_tab[tempName] = node_temp;
+        auto p = nod_tab.find(tempParent);
+        if (p != nod_tab.end()) {
+          p->second->children.push_back(node_temp);
+        }
       } else {
         node_temp = new Node(tempName, tempWeight);
       }
         //cout << "Assigning" << ident << " to " << temp << endl;
-
-        nod_tab[tempName] = node_temp;
 
     }
 
