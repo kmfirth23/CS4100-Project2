@@ -115,7 +115,7 @@ string_expr
         {
             $$ = new string_concat($1, $3);
         }
-    | string_expr '+' integer_variable
+    | string_expr '+' integer_expression
         {
             $$ = new string_concat($1, $3);
         }

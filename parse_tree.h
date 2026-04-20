@@ -419,9 +419,9 @@ class string_concat: public string_expression {
             first = str_val1;
             second = str_val2;
         }
-        string_concat(string_expression *str_val, int_variable *int_val){
+        string_concat(string_expression *str_val, integer_expression *int_val){
           first = str_val;
-          second = int_to_string_expr(int_val);
+          second = new int_to_string_expr(int_val);
         }
         virtual string evaluate_expression(map<string, int> &sym_tab, 
                                       map<string, string> &str_tab, 
