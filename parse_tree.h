@@ -22,11 +22,21 @@
 
 using namespace std;
 
+/**
+ * @name integer_expression
+ *       evaluates an integer 
+ * 
+ */
 class integer_expression {
  public:
   virtual int evaluate_expression(map<string, int> &sym_tab) =0;
 };
 
+/**
+ * @name string_expression
+ *       evaluates a string
+ * 
+ */
 class string_expression {
   public:
     virtual string evaluate_expression(map<string, int> &sym_tab, 
@@ -34,12 +44,22 @@ class string_expression {
                                       map<string, Node*> &nod_tab ) =0;
 };
 
+/**
+ * @name boolean_expression
+ *       evaluates a boolean expression
+ * 
+ */
 class boolean_expression {
  public:
      virtual bool evaluate_expression(map<string, int> &sym_tab)=0;
 };
 
-
+/**
+ * @name int_constant
+ *       evaluates a constant integer, not attatched to a variable
+ * 
+ * saved_val: value stored in the symbol table
+ */
 class int_constant:public integer_expression {
  public:
   int_constant(int val) {saved_val = val;}
@@ -51,6 +71,12 @@ class int_constant:public integer_expression {
   int saved_val;
 };
 
+/**
+ * @name string variable
+ *       evaluates a string that is attached to a variable
+ * 
+ * saved_val: value stored in the symbol table
+ */
 class string_variable: public string_expression {
   public: 
     string_variable(char *str_val) {
@@ -81,9 +107,15 @@ class string_variable: public string_expression {
   private:
     string saved_val;
 };
+
+/**
+ * @name integer_expression
+ *       returns an integer value from the symbol table
+ * 
+ */
 class int_variable: public integer_expression {
  public:
-  int_variable(char *in_val) {//cout << "Found variable = " << in_val << endl; 
+  int_variable(char *in_val) {
     if(in_val != nullptr)
     {
       saved_val = in_val;
@@ -116,13 +148,22 @@ class int_variable: public integer_expression {
   
 };
 
+/**
+ * @name plus_expr
+ *       evaluates an addition equation between two integers
+ * 
+ * l - pointer to the integer on the left side of the expression
+ * r - pointer to the integer on the right side of the expression
+ */
 class plus_expr: public integer_expression {
  public:
+  // constructor
   plus_expr(integer_expression *left, integer_expression *right) {
     l = left;
     r = right;
   }
 
+  // evaluation
   virtual int evaluate_expression(map<string, int> &sym_tab) {
     return l->evaluate_expression(sym_tab) + r->evaluate_expression(sym_tab);
   }
@@ -132,6 +173,10 @@ class plus_expr: public integer_expression {
     integer_expression *r;
 };
 
+/**
+ * @name less_expr
+ *       evaluates a less than boolean expression
+ */
 class less_expr: public boolean_expression {
  public:
   less_expr(integer_expression *left, integer_expression *right) {
@@ -144,6 +189,12 @@ class less_expr: public boolean_expression {
   integer_expression *l;
   integer_expression *r;
 };
+
+/**
+ * @name greater_expr
+ *       evaluates a greater than expression
+ * 
+ */
 class greater_expr: public boolean_expression {
  public:
   greater_expr(integer_expression *left, integer_expression *right) {
@@ -156,6 +207,11 @@ class greater_expr: public boolean_expression {
   integer_expression *l;
   integer_expression *r;
 };
+
+/**
+ * @name ge_expr
+ *       evaluates a greater than or equal to expression
+ */
 class ge_expr: public boolean_expression {
  public:
   ge_expr(integer_expression *left, integer_expression *right) {
@@ -168,6 +224,11 @@ class ge_expr: public boolean_expression {
   integer_expression *l;
   integer_expression *r;
 };
+
+/**
+ * @name le_expr
+ *       evaluates a less than or equal to expression 
+ */
 class le_expr: public boolean_expression {
  public:
   le_expr(integer_expression *left, integer_expression *right) {
@@ -180,6 +241,12 @@ class le_expr: public boolean_expression {
   integer_expression *l;
   integer_expression *r;
 };
+
+/**
+ * @name ee_expr
+ *       evaluates an equal to expression
+ * 
+ */
 class ee_expr: public boolean_expression {
  public:
   ee_expr(integer_expression *left, integer_expression *right) {
@@ -193,8 +260,10 @@ class ee_expr: public boolean_expression {
   integer_expression *r;
 };
 
-
-
+/**
+ * @name statement
+ *       parent class for statements
+ */
 class statement {
  public:
   virtual void evaluate_statement(map<string, int> &sym_tab,
@@ -202,13 +271,22 @@ class statement {
                                   map<string, Node*> &nod_tab) =0;
 };
 
+/**
+ * @name compound_statement
+ *       evaluates statements that combine different types
+ * 
+ * f - the current statement being evaluated
+ * r - the rest of the program
+ */
 class compound_statement: public statement {
  public:
+  // constructor
   compound_statement(statement *first, compound_statement *rest) {
     f = first;
     r = rest;
   }
   
+  // evaluation
   virtual void evaluate_statement(map<string, int> &sym_tab,
                                   map<string, string> &str_tab,
                                   map<string, Node*> &nod_tab) {
@@ -225,9 +303,18 @@ class compound_statement: public statement {
 };
   
 
+/**
+ * @name for_statement
+ *       evaluates a for loop
+ * 
+ * loop_variable - variable being incremented
+ * lower_bound - starting value for loop
+ * upper_bound - terminating value for loop
+ * body - content inside the loop
+ */
 class for_statement: public statement {
  public:
-    // current logic is for while loop, change for the for loop
+    // constructor
   for_statement(string loopVar, 
                 integer_expression *l, 
                 integer_expression *u,
@@ -239,6 +326,7 @@ class for_statement: public statement {
     body = temp;
   }
 
+  // evaluation
   virtual void evaluate_statement(map<string, int> &sym_tab,
                                   map<string, string> &str_tab,
                                   map<string, Node*> &nod_tab) {
@@ -260,9 +348,17 @@ class for_statement: public statement {
     statement* body;
   };
 
+/**
+ * @name assignment_statement
+ *       evaluates the assignment of variables
+ * 
+ * id - the name of the variable
+ * rhs - the value to be assigned
+ */
 class assignment_statement: public statement {
 
  public:
+  // constructor
   assignment_statement(char *id, integer_expression *rhs) {
     if(id != nullptr)
     {
@@ -274,6 +370,8 @@ class assignment_statement: public statement {
     }
     r_side = rhs;
   }
+
+  // evaluation
   virtual void evaluate_statement(map<string, int> &sym_tab,
                                   map<string, string> &str_tab,
                                   map<string, Node*> &nod_tab) {
@@ -291,6 +389,13 @@ class assignment_statement: public statement {
     integer_expression *r_side;
   };
 
+/**
+ * @name print_statement
+ *       calls the print function for the node class
+ * 
+ * e - integer expression to print
+ * s - string expression to print
+ */
 class print_statement: public statement {
  public:
   print_statement(integer_expression *expr) {
@@ -327,8 +432,17 @@ class print_statement: public statement {
 
 };
 
+/**
+ * @name build_statement
+ *       evaluates the build function in the tree builder language
+ * 
+ * name - name of the node
+ * weight - weight of the node
+ * parent - parent of the node, defaults to empty string
+ */
 class build_statement: public statement {
  public: 
+    // constructor
     build_statement(string_expression* n, integer_expression* w, string_expression* p){
         name = n;
         weight = w;
@@ -337,11 +451,14 @@ class build_statement: public statement {
         // new Node(n, w, p);
     }
 
+    // constructor for root node
     build_statement(string_expression* n, integer_expression* w) {
       name = n;
       weight = w;
       parent = NULL;
     }
+
+    // evaluation
     virtual void evaluate_statement(map<string, int> &sym_tab,
                                     map<string , string> &str_tab,  
                                     map<string, Node*> &nod_tab){
@@ -372,8 +489,15 @@ class build_statement: public statement {
     string_expression* parent;
 };
 
+/**
+ * @name string constant
+ *       evaluates a string that is literal, not attached to a variable
+ * 
+ * saved_val - the value being stored from the string
+ */
 class string_constant : public string_expression {
   public:
+    // constructor
     string_constant(char *str_val) {
       if(str_val != nullptr)
       {
@@ -389,6 +513,8 @@ class string_constant : public string_expression {
         saved_val = saved_val.substr(1, saved_val.size() - 2);
       }
     }
+
+    // evaluation
     virtual string evaluate_expression(map<string, int> &sym_tab,
                                       map<string, string> &str_tab,
                                       map<string, Node*> &nod_tab) {
@@ -399,10 +525,18 @@ class string_constant : public string_expression {
     string saved_val;
 };
 
+/**
+ * @name int_to_string_expr
+ *       converts an integer to a string for string concatenation
+ * 
+ * expr - the integer to be converted
+ */
 class int_to_string_expr : public string_expression {
   public:
+    // constructor
     int_to_string_expr(integer_expression *e) { expr = e; }
 
+    // calling to_string to convert
     virtual string evaluate_expression(map<string, int> &sym_tab,
                                        map<string, string> &str_tab,
                                        map<string, Node*> &nod_tab) {
@@ -413,16 +547,28 @@ class int_to_string_expr : public string_expression {
     integer_expression *expr;
 };
 
+/**
+ * @name string_concat
+ *       evaluates instances of string concatenation
+ * 
+ * first - the first half of the concatenation expression
+ * second - the second half of the concatenation expression
+ */
 class string_concat: public string_expression {
     public: 
+        // constructor for concatenating two strings
         string_concat(string_expression *str_val1, string_expression *str_val2){
             first = str_val1;
             second = str_val2;
         }
+        
+        // constructor for concatenating a string and an integer
         string_concat(string_expression *str_val, integer_expression *int_val){
           first = str_val;
           second = new int_to_string_expr(int_val);
         }
+
+        // evaluating
         virtual string evaluate_expression(map<string, int> &sym_tab, 
                                       map<string, string> &str_tab, 
                                       map<string, Node*> &nod_tab) {
