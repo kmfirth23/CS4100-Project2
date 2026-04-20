@@ -1,3 +1,10 @@
+/*
+ * @file tree_builder.y
+ * @author Kennedy Firth and Megan Penn
+ * @brief Bison (YACC) file to parse and complete syntactic analysis
+ * @date 2026-04-15
+*/
+
 %start start_var
 %left '+'
 %error-verbose
