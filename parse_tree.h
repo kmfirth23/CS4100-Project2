@@ -66,7 +66,7 @@ class string_variable: public string_expression {
       if (p!=str_tab.end()) {
         return p->second;
       } else {
-        return 0;
+        return "";
       }
     }
 
@@ -336,4 +336,22 @@ class build_statement: public statement {
     string_expression* name;
     integer_expression* weight;
     string_expression* parent;
+};
+
+class string_constant : public string_expression {
+  public:
+    string_constant(char *str_val) {
+      saved_val = str_val;
+      if (!saved_val.empty() && saved_val.front() == '"' && saved_val.back() == '"') {
+        saved_val = saved_val.substr(1, saved_val.size() - 2);
+      }
+    }
+    virtual string evaluate_expression(map<string, int> &sym_tab,
+                                      map<string, string> &str_tab,
+                                      map<string, Node*> &nod_tab) {
+      return saved_val;
+    }
+  
+  private:
+    string saved_val;
 };

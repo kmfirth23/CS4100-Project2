@@ -1,5 +1,6 @@
 %start start_var
 %left '+'
+%error-verbose
 
 %{
     #include <iostream>
@@ -104,7 +105,7 @@ integer_expression
 string_expr
     : TKSTRING
         {
-            $$ = new string_variable($1);
+            $$ = new string_constant($1);
         }
     | TKVARIABLE
         {
