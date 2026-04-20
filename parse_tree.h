@@ -398,11 +398,29 @@ class string_constant : public string_expression {
     string saved_val;
 };
 
+class int_to_string_expr : public string_expression {
+  public:
+    int_to_string_expr(integer_expression *e) { expr = e; }
+
+    virtual string evaluate_expression(map<string, int> &sym_tab,
+                                       map<string, string> &str_tab,
+                                       map<string, Node*> &nod_tab) {
+      return to_string(expr->evaluate_expression(sym_tab));
+    }
+
+  private:
+    integer_expression *expr;
+};
+
 class string_concat: public string_expression {
     public: 
         string_concat(string_expression *str_val1, string_expression *str_val2){
             first = str_val1;
             second = str_val2;
+        }
+        string_concat(string_expression *str_val, int_variable *int_val){
+          first = str_val;
+          second = int_to_string_expr(int_val);
         }
         virtual string evaluate_expression(map<string, int> &sym_tab, 
                                       map<string, string> &str_tab, 
@@ -431,18 +449,4 @@ class string_concat: public string_expression {
     private: 
         string_expression *first;
         string_expression *second;
-};
-
-class int_to_string_expr : public string_expression {
-  public:
-    int_to_string_expr(integer_expression *e) { expr = e; }
-
-    virtual string evaluate_expression(map<string, int> &sym_tab,
-                                       map<string, string> &str_tab,
-                                       map<string, Node*> &nod_tab) {
-      return to_string(expr->evaluate_expression(sym_tab));
-    }
-
-  private:
-    integer_expression *expr;
 };
