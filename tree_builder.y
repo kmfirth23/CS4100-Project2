@@ -20,6 +20,7 @@
 %type <s_ptr> statement for_statement assignment_statement print_statement build_statement
 %type <c_ptr> program start_var
 %type <s_exp_ptr> string_expr
+%type <s_ptr> block_statement
 %token TKBUILDNODE TKNAME TKWEIGHT TKISCHILD TKPRINT TKIN TKFOR
 
 %union {
@@ -60,6 +61,18 @@ statement
     | for_statement {$$ = $1;}
     | print_statement {$$ = $1;}
     | assignment_statement {$$ = $1;}
+    | block_statement { $$ = $1; }
+    ;
+
+block_statement
+    : '{' program '}'
+        {
+            $$ = $2;
+        }
+    | '{' program '}' ';'
+        {
+            $$ = $2;
+        }
     ;
 
 expr 
@@ -118,9 +131,9 @@ build_statement
     ;
 
 for_statement
-    : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' '{' build_statement '}' ';'
+    : TKFOR TKVARIABLE TKIN '[' expr ':' expr ']' block_statement
         {
-            $$ = new for_statement($2, $5, $7, $10);
+            $$ = new for_statement($2, $5, $7, $9);
         }
     ;
 
