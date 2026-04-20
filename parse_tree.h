@@ -360,6 +360,7 @@ class build_statement: public statement {
         }
       } else {
         node_temp = new Node(tempName, tempWeight);
+        nod_tab[tempName] = node_temp;
       }
         //cout << "Assigning" << ident << " to " << temp << endl;
 
